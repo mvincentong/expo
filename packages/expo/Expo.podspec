@@ -49,6 +49,7 @@ Pod::Spec.new do |s|
   # Otherwise, `pod install` would fail because it's not linkable by the community CLI.
   if defined?(use_expo_modules!)
     s.dependency 'ExpoModulesCore'
+    s.dependency 'ExpoModulesJSI'
   elsif !$expo_warned_about_missing_autolinking
     puts <<~EOS
 
@@ -63,8 +64,8 @@ Pod::Spec.new do |s|
   end
 
   header_search_paths = [
-    '"$(PODS_ROOT)/Headers/Private/React-Core"', # as React-RCTAppDelegate.podspec to access JSCExecutorFactory.h
-    '"$(PODS_ROOT)/DoubleConversion"',
+    # '"$(PODS_ROOT)/Headers/Private/React-Core"', # as React-RCTAppDelegate.podspec to access JSCExecutorFactory.h
+    # '"$(PODS_ROOT)/DoubleConversion"',
     '"${PODS_CONFIGURATION_BUILD_DIR}/ExpoModulesCore/Swift Compatibility Header"',
   ]
   if ENV['USE_FRAMEWORKS']
@@ -90,11 +91,13 @@ Pod::Spec.new do |s|
   end
   s.pod_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => header_search_paths.join(' '),
+    # 'OTHER_SWIFT_FLAGS' => '-Xfrontend -clang-header-expose-decls=has-expose-attr',
+    # 'SWIFT_OBJC_INTEROP_MODE' => 'objcxx',
   }
   s.user_target_xcconfig = {
     'HEADER_SEARCH_PATHS' => [
-      '"${PODS_CONFIGURATION_BUILD_DIR}/Expo/Swift Compatibility Header"',
-      '"$(PODS_ROOT)/Headers/Private/Yoga"',
+      # '"${PODS_CONFIGURATION_BUILD_DIR}/Expo/Swift Compatibility Header"',
+      # '"$(PODS_ROOT)/Headers/Private/Yoga"',
     ]
   }
 
